@@ -1,2 +1,2 @@
-# helpers
+# Helpers
 Repo with helper functions
