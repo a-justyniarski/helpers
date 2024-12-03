@@ -277,12 +277,12 @@ def format_date_string_y_m_d(s: str) -> str:
 
 
 # List functions
-def get_first_elem(lst: list) -> str or int or float:
+def get_first_elem(lst: list) -> Union[str, int, float]:
 	"""Returns first element of a list or empty string if list is empty"""
 	return next(iter(lst), '')
 
 
-def get_first_n_elem_as_str(lst: list, n: int) -> str or int or float:
+def get_first_n_elem_as_str(lst: list, n: int) -> Union[str, int, float]:
 	"""Returns first n elements of a list as a string or empty string if list is empty"""
 	gen = iter(lst)
 	s = ''
