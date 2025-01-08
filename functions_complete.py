@@ -1,6 +1,7 @@
 import hashlib
 import importlib
 import inspect
+import math
 import re
 import sys
 import time
@@ -354,6 +355,59 @@ def extract_polish_zip(s: str) -> str:
     if postal_match is not None:
         return postal_match.group()
     return ""
+
+
+def roman_to_int(roman):
+    if roman == '-':
+        return 0
+    roman_values = {
+        'I': 1,
+        'V': 5,
+        'X': 10,
+        'L': 50,
+        'C': 100,
+        'D': 500,
+        'M': 1000
+    }
+
+    result = 0
+    previous_value = 0
+
+    for char in reversed(roman):
+        current_value = roman_values[char]
+
+        if current_value < previous_value:
+            result -= current_value
+        else:
+            result += current_value
+
+        previous_value = current_value
+
+    return result
+
+
+def reduce_order(digit, target_order):
+    if digit == 0:
+        order_ = 1
+    else:
+        order_ = int(math.log10(abs(digit))) + 1
+    delta_order = float(f"1e{order_ - target_order}")
+
+    if delta_order < 1:
+        return digit
+
+    return digit // delta_order
+
+
+def hex_to_rgb(hex_str):
+    hex_str = hex_str.lstrip('#')
+    if len(hex_str) in [3, 4]:
+        hex_str = ''.join([c * 2 for c in hex_str])
+    if len(hex_str) == 6:
+        r, g, b = int(hex_str[0:2], 16), int(hex_str[2:4], 16), int(hex_str[4:6], 16)
+    else:
+        raise ValueError("Invalid hex color format. Expected #RRGGBB or #RRGGBB.")
+    return r, g, b, 255
 
 
 if __name__ == '__main__':
