@@ -156,7 +156,7 @@ def normalize_char(c: str) -> str:
 
 def prep_decimal_from_string(s: str, precision_fp: int = 2) -> Decimal:
     if precision_fp > 20:
-        raise ValueError('Precision has to be smaller than 1E-20')
+        raise ValueError('Precision has to be larger than 1E-20')
     precision = str(1 / (10 ** precision_fp))
     if not s.replace('.', '').isdigit():
         return Decimal('0').quantize(Decimal(precision))
@@ -171,6 +171,12 @@ def translate_word_containing_substring(s: str, translator_tuple: tuple[tuple[st
     :return: translated phrase or empty string
     """
     return "".join(next(iter(list(filter(lambda x: x[0] in s, translator_tuple))), ('', ''))[1])
+
+
+# BeautifulSoup functions
+def soup_get_text_first(parent):
+    first_text_occurrence = parent.find_all(text=True, recursive=False)
+    return first_text_occurrence[0].strip() if first_text_occurrence else ""
 
 
 # Refine functions
@@ -311,11 +317,7 @@ def get_first_n_elem_as_str(lst: list, n: int) -> Union[str, int, float]:
     return s.strip()
 
 
-def custom_slugify(text: str, separator: str = '-') -> str:
-    text = normalize_string(text).replace(' ', separator).lower()
-    return text
-
-
+# Hash functions
 def calculate_md5(text: str) -> str:
     return hashlib.md5(text.encode("utf-8")).hexdigest()
 
@@ -326,9 +328,10 @@ def calculate_hash(text: str, salt: str = "", shift: int = 0):
     return shifted_digest.hex()
 
 
-def soup_get_text_first(parent):
-    first_text_occurrence = parent.find_all(text=True, recursive=False)
-    return first_text_occurrence[0].strip() if first_text_occurrence else ""
+# String manipulation functions
+def custom_slugify(text: str, separator: str = '-') -> str:
+    text = normalize_string(text).replace(' ', separator).lower()
+    return text
 
 
 def kebabcase_to_pascalcase(s: str):
@@ -345,11 +348,6 @@ def kebabcase_to_pascalcase(s: str):
     return "".join(new_str_list)
 
 
-def import_class(module_path: str, class_name: str):
-    module = importlib.import_module(module_path)
-    return getattr(module, class_name)
-
-
 def extract_polish_zip(s: str) -> str:
     postal_match = re.search("\d{2}-\d{3}", s)
     if postal_match is not None:
@@ -357,7 +355,7 @@ def extract_polish_zip(s: str) -> str:
     return ""
 
 
-def roman_to_int(roman):
+def roman_to_int(roman: str):
     if roman == '-':
         return 0
     roman_values = {
@@ -399,6 +397,12 @@ def reduce_order(digit, target_order):
     return digit // delta_order
 
 
+# Variety functions
+def import_class(module_path: str, class_name: str):
+    module = importlib.import_module(module_path)
+    return getattr(module, class_name)
+
+
 def hex_to_rgb(hex_str):
     hex_str = hex_str.lstrip('#')
     if len(hex_str) in [3, 4]:
@@ -406,7 +410,7 @@ def hex_to_rgb(hex_str):
     if len(hex_str) == 6:
         r, g, b = int(hex_str[0:2], 16), int(hex_str[2:4], 16), int(hex_str[4:6], 16)
     else:
-        raise ValueError("Invalid hex color format. Expected #RRGGBB or #RRGGBB.")
+        raise ValueError("Invalid hex color format. Expected #RRGGBB.")
     return r, g, b, 255
 
 
