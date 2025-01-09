@@ -403,7 +403,7 @@ def import_class(module_path: str, class_name: str):
     return getattr(module, class_name)
 
 
-def hex_to_rgb(hex_str):
+def hex_to_rgba(hex_str):
     hex_str = hex_str.lstrip('#')
     if len(hex_str) in [3, 4]:
         hex_str = ''.join([c * 2 for c in hex_str])
@@ -412,6 +412,17 @@ def hex_to_rgb(hex_str):
     else:
         raise ValueError("Invalid hex color format. Expected #RRGGBB.")
     return r, g, b, 255
+
+
+def hex_to_rgb(hex_str):
+    hex_str = hex_str.lstrip('#')
+    if len(hex_str) in [3, 4]:
+        hex_str = ''.join([c * 2 for c in hex_str])
+    if len(hex_str) == 6:
+        r, g, b = int(hex_str[0:2], 16), int(hex_str[2:4], 16), int(hex_str[4:6], 16)
+    else:
+        raise ValueError("Invalid hex color format. Expected #RRGGBB.")
+    return r, g, b
 
 
 if __name__ == '__main__':
